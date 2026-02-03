@@ -140,15 +140,32 @@ function initScrollEffects() {
 // Data Fetching
 function getRelativeDataPath() {
     const path = window.location.pathname;
-    // For localhost/index.html or localhost/ its 0 depth
-    // For localhost/events/ or localhost/events/index.html its 1 depth
+    
+    // Known subdirectories in the project
+    const knownDirs = ['events', 'team', 'deals', 'partners', 'sponsors', 'student-id', 'secret-id-gen'];
+    
+    // Check if we're in a subdirectory by looking at the last meaningful part of the path
+    let depth = 0;
+    
+    // Split path and filter out empty strings
     const parts = path.split('/').filter(p => p !== '');
-    if (path.endsWith('index.html')) parts.pop();
-
-    // On Windows local files, pathname can be /D:/path/to/project
-    // We try to find the project root by looking for 'events', 'courses', etc.
-    // But assuming a server is used as recommended:
-    const depth = parts.length;
+    
+    // If we have parts, check the last non-index.html part
+    if (parts.length > 0) {
+        // Get the last part (could be index.html or a directory name)
+        let lastPart = parts[parts.length - 1];
+        
+        // If it's index.html, check the part before it
+        if (lastPart === 'index.html' && parts.length > 1) {
+            lastPart = parts[parts.length - 2];
+        }
+        
+        // If the last part is a known directory, we're one level deep
+        if (knownDirs.includes(lastPart)) {
+            depth = 1;
+        }
+    }
+    
     return "../".repeat(depth) + "data/";
 }
 
