@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GFG IEC | Student Chapter</title>
+    <meta name="description"
+        content="Official GeeksforGeeks Student Chapter of IEC College of Engineering & Technology">
+    <link rel="icon" href="/static/assets/logo.png" type="image/png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/modern-styles.css">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <!-- Premium Loader -->
+    <div id="loader" class="loader-wrapper">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <img src="/static/assets/logo.png" alt="GFG Logo">
+            </div>
+            <div class="loader-bar-container">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="premium-nav">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="/static/assets/logo.png" alt="GFG Logo">
+                <div class="logo-text">
+                    <span class="logo-main">GFG</span>
+                    <span class="logo-sub">IEC Chapter</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="/" class="nav-link active">Home</a></li>
+                <li><a href="/events/" class="nav-link">Events</a></li>
+                <li><a href="/team/" class="nav-link">Team</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="https://drive.google.com/file/d/18puEfKbgH_wv8_2yTVbe82VSzGsKby0o/view?usp=sharing"
+                    target="_blank" class="btn-primary btn-sm">
+                    <i data-lucide="smartphone"></i>
+                    <span>Get App</span>
+                </a>
+                <button class="mobile-toggle" id="mobile-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobile-drawer">
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <img src="/static/assets/logo.png" alt="GFG Logo">
+                <button id="drawer-close"><i data-lucide="x"></i></button>
+            </div>
+            <nav class="drawer-nav">
+                <a href="/" class="drawer-link active"><i data-lucide="home"></i> Home</a>
+                <a href="/events/" class="drawer-link"><i data-lucide="calendar"></i> Events</a>
+                <a href="/team/" class="drawer-link"><i data-lucide="users"></i> Team</a>
+                <a href="/deals/" class="drawer-link"><i data-lucide="tag"></i> Deals</a>
+                <a href="/student-id/" class="drawer-link"><i data-lucide="credit-card"></i> Student ID</a>
+                <a href="/partners/" class="drawer-link"><i data-lucide="handshake"></i> Partners</a>
+                <a href="/sponsors/" class="drawer-link"><i data-lucide="award"></i> Sponsors</a>
+            </nav>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-glow"></div>
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="badge fade-in">Official Student Chapter</div>
+                    <h1 class="hero-title fade-in-up">
+                        Elevate Your <br>
+                        <span class="text-gradient">Coding Journey</span>
+                    </h1>
+                    <p class="hero-description fade-in-up">
+                        Empowering students at IEC College of Engineering & Technology with the best resources,
+                        community, and opportunities.
+                    </p>
+                    <div class="hero-stats fade-in-up">
+                        <div class="stat-card">
+                            <span class="stat-number" id="events-count">...</span>
+                            <span class="stat-label">Events</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-card">
+                            <span class="stat-number">30+</span>
+                            <span class="stat-label">Core Team</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-card">
+                            <span class="stat-number">200+</span>
+                            <span class="stat-label">Students</span>
+                        </div>
+                    </div>
+                    <div class="hero-actions fade-in-up">
+                        <a href="/events/" class="btn-primary">
+                            <span>Explore Events</span>
+                            <i data-lucide="arrow-right"></i>
+                        </a>
+                        <a href="https://chat.whatsapp.com/LIn9ooUhHvjKWUm5s5tnDL" target="_blank"
+                            class="btn-secondary">
+                            <i data-lucide="users"></i>
+                            <span>Join Community</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual fade-in">
+                    <div class="visual-card">
+                        <div class="card-dots"></div>
+                        <div class="card-header">
+                            <div class="card-title">Latest Updates</div>
+                        </div>
+                        <div id="hero-event-highlight">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ongoing Events Section -->
+        <section class="section section-ongoing" id="ongoing-section" style="display:none;">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Ongoing <span class="text-gradient">Events</span></h2>
+                </div>
+                <div class="ongoing-scroll" id="ongoing-container">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Events Section -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <div class="badge">Don't Miss Out</div>
+                        <h2 class="section-title">Upcoming <span class="text-gradient">Events</span></h2>
+                    </div>
+                    <a href="/events/" class="view-all">View All <i data-lucide="chevron-right"></i></a>
+                </div>
+                <div class="grid grid-events" id="upcoming-container">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Deals Preview -->
+        <section class="section section-alt">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <div class="badge">Exclusive Perks</div>
+                        <h2 class="section-title">Student <span class="text-gradient">Deals</span></h2>
+                    </div>
+                    <a href="/deals/" class="view-all">See All <i data-lucide="chevron-right"></i></a>
+                </div>
+                <div class="grid grid-deals" id="deals-container">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Partners & Sponsors Section -->
+        <section class="section section-alt">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <div class="badge">Trusted By</div>
+                        <h2 class="section-title">Our <span class="text-gradient">Partners</span></h2>
+                    </div>
+                    <a href="/partners/" class="view-all">View All <i data-lucide="chevron-right"></i></a>
+                </div>
+                <div class="partners-grid" id="home-partners-container">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <div class="badge">Supported By</div>
+                        <h2 class="section-title">Our <span class="text-gradient">Sponsors</span></h2>
+                    </div>
+                    <a href="/sponsors/" class="view-all">View All <i data-lucide="chevron-right"></i></a>
+                </div>
+                <div class="sponsors-grid" id="home-sponsors-container">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- App Call to Action -->
+        <section class="section container">
+            <div class="cta-card">
+                <div class="cta-content">
+                    <h2 class="cta-title">Everything is better with the <span class="text-gradient">App</span></h2>
+                    <p class="cta-desc">Download our official app for real-time updates, profile management, and more.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="https://drive.google.com/file/d/18puEfKbgH_wv8_2yTVbe82VSzGsKby0o/view?usp=sharing"
+                            target="_blank" class="btn-primary">
+                            <i data-lucide="download"></i>
+                            Download for Android
+                        </a>
+                    </div>
+                </div>
+                <div class="cta-visual">
+                    <img src="/static/assets/app.jpg" alt="App Preview">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                    <img src="/static/assets/logo.png" alt="GFG Logo">
+                    <span>GFG IEC Chapter</span>
+                </div>
+                <p>Building the coding culture at IEC College of Engineering & Technology.</p>
+                <div class="socials">
+                    <a href="https://www.linkedin.com/company/gfg-iec-campus-body/" target="_blank"><i
+                            data-lucide="linkedin"></i></a>
+                    <a href="https://www.instagram.com/geeksforgeeks_ieccet/" target="_blank"><i
+                            data-lucide="instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Navigation</h3>
+                <a href="/">Home</a>
+                <a href="/events/">Events</a>
+                <a href="/team/">Team</a>
+            </div>
+            <div class="footer-links">
+                <h3>Resources</h3>
+                <a href="/student-id/">Student ID</a>
+                <a href="/deals/">Deals</a>
+                <a href="/partners/">Partners</a>
+                <a href="/sponsors/">Sponsors</a>
+            </div>
+            <div class="footer-links">
+                <h3>Community</h3>
+                <a href="https://forms.gle/NGTVzxbYBkLuKgKZA" target="_blank">Core Team App</a>
+                <a href="https://chat.whatsapp.com/LIn9ooUhHvjKWUm5s5tnDL" target="_blank">WhatsApp Group</a>
+                <a href="https://forms.gle/5WysV2vAoAr7svFd7" target="_blank">Submit Idea</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 GFG IEC Chapter. Made with ❤️ by the Core Team.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/js/modern-main.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

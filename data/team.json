@@ -251,7 +251,7 @@
         "name": "Aditya Singh",
         "role": "Video Editing",
         "details": "Core Team Member",
-        "image": "static/assets/photos/aditya-singh.HEIC",
+        "image": "static/assets/photos/aditya-singh.jpeg",
         "linkedin": "",
         "email": "ridhikumari516@gmail.com"
     },
@@ -262,5 +262,21 @@
         "image": "static/assets/photos/aryansh-singh.jpeg",
         "linkedin": "",
         "email": "ridhikumari516@gmail.com"
+    },
+    {
+        "name": "Piyush Kumar Rana",
+        "role": "PR and Promotions",
+        "details": "Core Team Member",
+        "image": "static/assets/photos/piyush.jpeg",
+        "linkedin": "",
+        "email": "piyushkumarrana55@gmail.com"
+    },
+    {
+        "name": "Aastha Singh ",
+        "role": "PR and Promotions",
+        "details": "Core Team Member",
+        "image": "static/assets/photos/astha-singh.jpeg",
+        "linkedin": "",
+        "email": "aasthakashyap555@gmail.com"
     }
 ]

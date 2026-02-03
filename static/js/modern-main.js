@@ -1,0 +1,446 @@
+/* ===================================
+   GFG IEC - Modern Core Logic
+   =================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initLoader();
+    initNavigation();
+    initScrollEffects();
+    initImageModal();
+
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(p => p !== '' && p !== 'index.html');
+
+    // Determine page from last part of path before index.html
+    const currentPage = parts.length > 0 ? parts[parts.length - 1] : 'home';
+    console.log(`Detected page: ${currentPage}, depth: ${parts.length}`);
+
+    if (currentPage === 'home') {
+        initHomePage();
+    } else if (currentPage === 'events') {
+        initEventsPage();
+    } else if (currentPage === 'team') {
+        initTeamPage();
+    } else if (currentPage === 'deals') {
+        initDealsPage();
+    } else if (currentPage === 'partners') {
+        initPartnersPage();
+    } else if (currentPage === 'sponsors') {
+        initSponsorsPage();
+    }
+});
+
+// Modal Logic
+function initImageModal() {
+    // Inject modal HTML if not present
+    if (!document.getElementById('image-modal')) {
+        const modal = document.createElement('div');
+        modal.id = 'image-modal';
+        modal.className = 'image-modal';
+        modal.innerHTML = `
+            <div class="image-modal-close"><i data-lucide="x"></i></div>
+            <img src="" alt="Full size" class="image-modal-content">
+        `;
+        document.body.appendChild(modal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target !== modal.querySelector('.image-modal-content')) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+
+    // Use event delegation for zoomable images
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('zoomable')) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = modal.querySelector('.image-modal-content');
+            modalImg.src = e.target.src;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
+    });
+}
+
+// UI Logic
+function initLoader() {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 1000);
+        });
+        // Fallback
+        setTimeout(() => loader.classList.add('hidden'), 3000);
+    }
+}
+
+function initNavigation() {
+    const nav = document.querySelector('.premium-nav');
+    const toggle = document.getElementById('mobile-toggle');
+    const drawer = document.getElementById('mobile-drawer');
+    const close = document.getElementById('drawer-close');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            drawer.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    if (close) {
+        close.addEventListener('click', () => {
+            drawer.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    }
+
+    // Close drawer on link click
+    const drawerLinks = document.querySelectorAll('.drawer-link');
+    drawerLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            drawer.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    });
+}
+
+function initScrollEffects() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-up, .grid > *, .section-header').forEach(el => {
+        observer.observe(el);
+    });
+}
+
+// Data Fetching
+function getRelativeDataPath() {
+    const path = window.location.pathname;
+    // For localhost/index.html or localhost/ its 0 depth
+    // For localhost/events/ or localhost/events/index.html its 1 depth
+    const parts = path.split('/').filter(p => p !== '');
+    if (path.endsWith('index.html')) parts.pop();
+
+    // On Windows local files, pathname can be /D:/path/to/project
+    // We try to find the project root by looking for 'events', 'courses', etc.
+    // But assuming a server is used as recommended:
+    const depth = parts.length;
+    return "../".repeat(depth) + "data/";
+}
+
+async function fetchData(url) {
+    try {
+        const relativeDataPath = getRelativeDataPath();
+        const dataUrl = relativeDataPath + url.replace(/^\/data\//, '');
+        console.log(`Fetching: ${dataUrl}`);
+        const response = await fetch(dataUrl);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return await response.json();
+    } catch (e) {
+        console.error(`Could not fetch data from ${url}: `, e);
+        return null;
+    }
+}
+
+function fixImagePath(path) {
+    if (!path) return '/static/assets/logo.png';
+    if (path.startsWith('http') || path.startsWith('/') || path.startsWith('data:')) return path;
+
+    // If it's a relative path from the JSON (like static/assets/...)
+    // we need to make it relative to the root
+    const rootPath = getRelativeDataPath().replace('data/', '');
+    return rootPath + path;
+}
+
+// Home Page Logic
+async function initHomePage() {
+    const deals = await fetchData('/data/deals.json');
+    const team = await fetchData('/data/team.json');
+    const upcoming = await fetchData('/data/events/upcoming.json');
+    const ongoing = await fetchData('/data/events/ongoing.json');
+    const past = await fetchData('/data/events/past.json');
+    const partners = await fetchData('/data/partners.json');
+    const sponsors = await fetchData('/data/sponsors.json');
+
+    // Stats
+    const totalEvents = (upcoming?.length || 0) + (ongoing?.length || 0) + (past?.length || 0);
+    const eventsCountEl = document.getElementById('events-count');
+    if (eventsCountEl) eventsCountEl.innerText = `${totalEvents}+`;
+
+    // Render Ongoing
+    if (ongoing && ongoing.length > 0) {
+        const ongoingSection = document.getElementById('ongoing-section');
+        const container = document.getElementById('ongoing-container');
+        ongoingSection.style.display = 'block';
+        ongoing.forEach(event => {
+            container.innerHTML += renderOngoingCard(event);
+        });
+    }
+
+    // Render Upcoming (max 3)
+    const upcomingContainer = document.getElementById('upcoming-container');
+    if (upcoming && upcomingContainer) {
+        upcoming.slice(0, 3).forEach(event => {
+            upcomingContainer.innerHTML += renderEventCard(event);
+        });
+    }
+
+    // Render Deals (max 3)
+    const dealsContainer = document.getElementById('deals-container');
+    if (deals && dealsContainer) {
+        deals.slice(0, 3).forEach(deal => {
+            dealsContainer.innerHTML += renderDealCard(deal);
+        });
+    }
+
+
+    // Hero Highlight
+    const heroHighlight = document.getElementById('hero-event-highlight');
+    if (upcoming && upcoming.length > 0 && heroHighlight) {
+        const event = upcoming[0];
+        heroHighlight.innerHTML = `
+            <div class="highlight-item">
+                <span class="highlight-tag">Next Event</span>
+                <h3>${event.title}</h3>
+                <p>${event.date} • ${event.venue}</p>
+                <a href="${event.link || '/events/'}" class="btn-primary btn-sm">Register Now</a>
+            </div>
+        `;
+    }
+
+    // Render Partners (all)
+    const partnersContainer = document.getElementById('home-partners-container');
+    if (partners && partnersContainer) {
+        let partnersHTML = '';
+        partners.forEach(partner => {
+            partnersHTML += renderSimpleCard(partner);
+        });
+        // Duplicate for marquee effect
+        partnersContainer.innerHTML = `<div class="marquee-track">${partnersHTML}${partnersHTML}</div>`;
+    }
+
+    // Render Sponsors (all)
+    const sponsorsContainer = document.getElementById('home-sponsors-container');
+    if (sponsors && sponsorsContainer) {
+        let sponsorsHTML = '';
+        sponsors.forEach(sponsor => {
+            sponsorsHTML += renderSimpleCard(sponsor);
+        });
+        // Duplicate for marquee effect
+        sponsorsContainer.innerHTML = `<div class="marquee-track">${sponsorsHTML}${sponsorsHTML}</div>`;
+    }
+
+    // Initialize auto-scroll after content is loaded
+    setTimeout(() => {
+        initAutoScroll();
+    }, 500);
+
+    lucide.createIcons();
+}
+
+// Events Page Logic
+async function initEventsPage() {
+    const upcoming = await fetchData('/data/events/upcoming.json');
+    const ongoing = await fetchData('/data/events/ongoing.json');
+    const past = await fetchData('/data/events/past.json');
+
+    const grid = document.getElementById('events-grid');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+
+    const renderEvents = (type) => {
+        grid.innerHTML = '';
+        let data = [];
+        if (type === 'upcoming') data = upcoming;
+        else if (type === 'past') data = past;
+        else if (type === 'ongoing') data = ongoing;
+
+        if (!data || data.length === 0) {
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--text-secondary);">No events found in this category.</div>';
+            return;
+        }
+
+        data.forEach(event => {
+            grid.innerHTML += renderEventCard(event);
+        });
+        lucide.createIcons();
+    };
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => {
+                b.classList.remove('active');
+                b.style.color = 'var(--text-secondary)';
+            });
+            btn.classList.add('active');
+            btn.style.color = 'var(--text-primary)';
+            renderEvents(btn.dataset.tab);
+        });
+    });
+
+    // Default
+    renderEvents('upcoming');
+}
+
+
+// Team Page Logic
+async function initTeamPage() {
+    const team = await fetchData('/data/team.json');
+    const container = document.getElementById('team-container');
+    console.log('Team data:', team);
+    console.log('Team container:', container);
+    if (team && container) {
+        team.forEach(member => {
+            container.innerHTML += renderTeamCard(member);
+        });
+    } else {
+        console.error('Team data or container not found');
+    }
+    setTimeout(() => {
+        initAutoScroll();
+    }, 500);
+    lucide.createIcons();
+}
+
+// Deals Page Logic
+async function initDealsPage() {
+    const deals = await fetchData('/data/deals.json');
+    const container = document.getElementById('deals-container');
+    if (deals && container) {
+        deals.forEach(deal => {
+            container.innerHTML += renderDealCard(deal);
+        });
+    }
+    lucide.createIcons();
+}
+
+// Partners & Sponsors
+async function initPartnersPage() {
+    const data = await fetchData('/data/partners.json');
+    const container = document.getElementById('partners-container');
+    if (data && container) {
+        data.forEach(item => {
+            container.innerHTML += renderSimpleCard(item);
+        });
+    }
+    lucide.createIcons();
+}
+
+async function initSponsorsPage() {
+    const data = await fetchData('/data/sponsors.json');
+    const container = document.getElementById('sponsors-container');
+    if (data && container) {
+        data.forEach(item => {
+            container.innerHTML += renderSimpleCard(item);
+        });
+    }
+    lucide.createIcons();
+}
+
+// Card Renderers
+function renderEventCard(event) {
+    return `
+        <div class="card event-card" style="padding: 28px;">
+            <div class="event-status">${event.status || 'UPCOMING'}</div>
+            <div class="event-date" style="margin-bottom: 16px;">
+                <i data-lucide="calendar"></i>
+                <span>${event.date}</span>
+            </div>
+            <h3 class="event-title" style="margin-bottom: 16px;">${event.title}</h3>
+            <p class="event-description" style="margin-bottom: 28px;">${(event.description || '').substring(0, 100)}...</p>
+            <div class="event-footer" style="gap: 12px;">
+                <span class="event-venue"><i data-lucide="map-pin" style="width:14px"></i> ${event.venue}</span>
+                <a href="${event.link || '#'}" class="btn-primary btn-sm">Join</a>
+            </div>
+        </div>
+    `;
+}
+
+function renderOngoingCard(event) {
+    return `
+        <div class="card event-card" style="border-color: var(--primary); padding: 28px;">
+            <div class="event-status" style="background:#2f8d46; color:white">LIVE</div>
+            <h3 class="event-title" style="margin-bottom: 16px; margin-top: 8px;">${event.title}</h3>
+            <p class="event-description" style="margin-bottom: 28px;">${event.description}</p>
+            <a href="${event.link}" target="_blank" class="btn-primary">Join Now <i data-lucide="external-link"></i></a>
+        </div>
+    `;
+}
+
+function renderDealCard(deal) {
+    return `
+        <div class="card deal-card" style="padding: 28px;">
+            <div class="badge" style="margin-bottom:16px">Coupon</div>
+            <h3 class="event-title" style="margin-bottom: 14px;">${deal.title}</h3>
+            <p class="event-description" style="margin-bottom: 24px;">${deal.benefit}</p>
+            <div class="coupon-box" onclick="copyCode('${deal.code}')" style="background:var(--glass); padding:14px 16px; border-radius:12px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap: 12px;">
+                <code style="color:var(--primary); font-weight:bold; font-size: 15px;">${deal.code}</code>
+                <i data-lucide="copy" style="width:18px; flex-shrink: 0;"></i>
+            </div>
+        </div>
+    `;
+}
+
+
+function renderTeamCard(member) {
+    return `
+        <div class="card team-card" style="text-align:center; padding: 36px 28px;">
+            <div style="width:140px; height:140px; border-radius:100px; overflow:hidden; margin: 0 auto 28px; border: 3px solid var(--primary); box-shadow: var(--shadow-primary);">
+                <img src="${fixImagePath(member.image)}" alt="${member.name}" class="zoomable" style="width:100%; height:100%; object-fit:cover; object-position: top center; border-radius: 100px;">
+            </div>
+            <h3 class="event-title" style="margin-bottom:12px; font-size: 19px;">${member.name}</h3>
+            <span style="color:var(--primary); font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing: 1.2px; display: block; margin-bottom: 20px;">${member.role}</span>
+            <p class="event-description" style="margin-top:0; line-height: 1.8; font-size: 14px;">${member.details}</p>
+        </div>
+    `;
+}
+
+function renderSimpleCard(item) {
+    const imgUrl = fixImagePath(item.image || item.logo);
+    const website = item.website || item.link;
+    return `
+        <div class="card" style="text-align:center; display: flex; flex-direction: column; padding: 36px 28px; height: 340px;">
+            <div style="flex: 0 0 auto; display: flex; align-items: center; justify-content: center; height: 100px; margin-bottom: 28px;">
+                <img src="${imgUrl}" alt="${item.name}" class="zoomable" style="max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 8px;">
+            </div>
+            <h3 class="event-title" style="margin-bottom: 0; font-size: 18px; flex: 0 0 auto;">${item.name}</h3>
+            ${(item.details || item.description) ? `<p class="event-description" style="margin-top:16px; margin-bottom: 0; line-height: 1.7; flex: 1 1 auto; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">${item.details || item.description}</p>` : '<div style="flex: 1 1 auto;"></div>'}
+            ${website ? `
+                <a href="${website}" target="_blank" class="btn-secondary btn-sm" style="margin-top: 24px; flex: 0 0 auto;">
+                    <span>Visit Website</span>
+                    <i data-lucide="external-link" style="width:14px"></i>
+                </a>
+            ` : ''}
+        </div>
+    `;
+}
+
+// Global copy function
+window.copyCode = (code) => {
+    navigator.clipboard.writeText(code).then(() => {
+        alert('Coupon code copied!');
+    });
+};

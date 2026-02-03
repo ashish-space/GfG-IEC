@@ -1,13 +1,13 @@
 # GFG IEC Student Chapter Portal
 
-The official web portal and tracking system for the **GeeksforGeeks Student Chapter** at **IEC College of Engineering & Technology**. This application serves as a central hub for student members to track their progress, view upcoming events, access courses, and see where they stand on the global leaderboard.
+The official web portal and tracking system for the **GeeksforGeeks Student Chapter** at **IEC College of Engineering & Technology**. This application serves as a central hub for student members to track their progress, view upcoming events, and see where they stand on the global leaderboard.
 
 ## 🚀 Features
 
 *   **Global Leaderboard**: Real-time ranking of students based on their GFG problem-solving score and community engagement.
 *   **Event Management**: Browse upcoming, ongoing, and past events organized by the chapter.
 *   **User Tracking**: Sync your GFG handle to automatically calculate your score, rank, and tier (Diamond, Gold, Silver, Bronze).
-*   **Resource Hub**: Access curated GFG courses and exclusive deals for members.
+*   **Resource Hub**: Access exclusive deals for members.
 *   **Team Showcase**: Meet the core team behind the GFG IEC chapter.
 *   **Dual-Server Architecture**: Seamless integration of a Flask frontend and a FastAPI backend for high-performance data handling.
 
@@ -78,7 +78,7 @@ python main.py
 *   `api_server.py`: The FastAPI application (port 8001) that handles logic for the leaderboard, user syncing, and GFG data fetching.
 *   `templates/`: HTML templates for the website pages.
 *   `static/`: CSS styles, JavaScript files, and images.
-*   `data/`: JSON files for static content (Events, Team, Courses).
+*   `data/`: JSON files for static content (Events, Team, Deals).
 
 ---
 

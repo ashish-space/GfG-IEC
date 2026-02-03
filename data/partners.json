@@ -9,6 +9,30 @@
         "name": "Techmania Club",
         "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1mCKBN6STvgWMZvBKoxIeBUfxdB0htPoiAw&s",
         "description": "Official Technical Club of IEC College of Engineering & Technology.",
-        "website": ""
+        "website": "https://www.iec.edu.in/"
+    },
+    {
+        "name": "GDG IILM",
+        "logo": "static/assets/brands/gdg-iilm.png",
+        "description": "💡 Dream it. Code it. Achieve it.",
+        "website": "https://www.instagram.com/gdg_iilm/"
+    },
+    {
+        "name": "Make Insane",
+        "logo": "static/assets/brands/reeogi.jpeg",
+        "description": "Official lifestyle partner.",
+        "website": "https://makeinsane.com/"
+    },
+    {  
+        "name": "GDG GL Bajaj",
+        "logo": "static/assets/brands/gdg-glbajaj.png",
+        "description": "Free & open to all who are interested in learning software development and programming.",
+        "website": "https://www.instagram.com/gdg_glbajaj/"
+    },
+    {  
+        "name": "GfG ADGIPS",
+        "logo": "static/assets/brands/gfg-adgips.png",
+        "description": "ᴡʜᴇʀᴇ ᴘᴀꜱꜱɪᴏɴ ᴍᴇᴇᴛꜱ ᴘʀᴏɢʀᴀᴍᴍɪɴɢ",
+        "website": "https://www.instagram.com/geeksforgeeks_adgips/"
     }
 ]

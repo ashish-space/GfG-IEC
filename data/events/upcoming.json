@@ -1,10 +1,18 @@
 [
     {
         "title": "Mentor Session",
-        "date": "March 15, 2026",
+        "date": "Feb  15, 2026",
         "time": "10:00 AM",
         "venue": "IEC Seminar Hall",
         "description": "Tentative date for upcoming mentor session, registration link will be shared soon.",
         "link": "https://chat.whatsapp.com/LIn9ooUhHvjKWUm5s5tnDL"
+    },
+    {
+        "title": "Hack a Geek ",
+        "date": "March 17, 2026",
+        "time": "10:00 AM",
+        "venue": "Multiple Venues | Virtual",
+        "description": "Make cool projects along with your friends from our partner colleges.",
+        "link": "/hack-a-geek/"
     }
 ]

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Team ID Generator | GFG IEC Chapter</title>
+    <link rel="icon" href="/static/assets/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/modern-styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .generator-section {
+            padding: 120px 0 60px;
+        }
+
+        .generator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .canvas-wrapper {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--glass-border);
+            line-height: 0;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .file-upload {
+            border: 2px dashed var(--glass-border);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: var(--glass);
+        }
+
+        .adjustment-controls {
+            background: var(--bg-surface);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .adjustment-controls.visible {
+            display: block;
+        }
+
+        .range-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .range-group label {
+            min-width: 50px;
+            font-size: 12px;
+            margin-bottom: 0;
+        }
+
+        input[type=range] {
+            flex: 1;
+            accent-color: var(--primary);
+        }
+
+        @media (max-width: 1024px) {
+            .generator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loader" class="loader-wrapper">
+        <div class="loader-content">
+            <div class="loader-logo"><img src="/static/assets/logo.png" alt="GFG Logo"></div>
+            <div class="loader-bar-container">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="premium-nav">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="/static/assets/logo.png" alt="GFG Logo">
+                <div class="logo-text"><span class="logo-main">GFG</span><span class="logo-sub">IEC Chapter</span></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/events/" class="nav-link">Events</a></li>
+                <li><a href="/team/" class="nav-link">Team</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="https://drive.google.com/file/d/18puEfKbgH_wv8_2yTVbe82VSzGsKby0o/view?usp=sharing"
+                    target="_blank" class="btn-primary btn-sm">
+                    <i data-lucide="smartphone"></i><span>Get App</span>
+                </a>
+                <button class="mobile-toggle" id="mobile-toggle"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-drawer" id="mobile-drawer">
+        <div class="drawer-content">
+            <div class="drawer-header"><img src="/static/assets/logo.png" alt="GFG Logo"><button id="drawer-close"><i
+                        data-lucide="x"></i></button></div>
+            <nav class="drawer-nav">
+                <a href="/" class="drawer-link"><i data-lucide="home"></i> Home</a>
+                <a href="/events/" class="drawer-link"><i data-lucide="calendar"></i> Events</a>
+                <a href="/team/" class="drawer-link"><i data-lucide="users"></i> Team</a>
+                <a href="/deals/" class="drawer-link"><i data-lucide="tag"></i> Deals</a>
+                <a href="/student-id/" class="drawer-link"><i data-lucide="credit-card"></i> Student ID</a>
+            </nav>
+        </div>
+    </div>
+
+    <main class="generator-section">
+        <div class="container generator-container">
+            <div class="card fade-in-up">
+                <h2 class="section-title" style="margin-bottom: 20px;">ID Card <span
+                        class="text-gradient">Generator</span></h2>
+
+                <div class="form-group">
+                    <div class="file-upload" onclick="document.getElementById('photo-input').click()">
+                        <input type="file" id="photo-input" accept="image/*" style="display:none">
+                        <div class="upload-label">
+                            <i data-lucide="camera" style="margin-bottom:10px"></i>
+                            <p id="file-name">Click to Upload Photo</p>
+                        </div>
+                    </div>
+
+                    <div class="adjustment-controls" id="adjustments">
+                        <div class="range-group"><label>Zoom</label><input type="range" id="zoom-range" min="0.5"
+                                max="5" step="0.1" value="1"></div>
+                        <div class="range-group"><label>X-Pos</label><input type="range" id="x-range" min="-300"
+                                max="300" value="0"></div>
+                        <div class="range-group"><label>Y-Pos</label><input type="range" id="y-range" min="-300"
+                                max="300" value="0"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name-input" class="form-control" placeholder="Prakhar Doneria">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <input type="text" id="role-input" class="form-control" placeholder="Technical Lead">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="phone-input" class="form-control" placeholder="+91 98765 43210">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email-input" class="form-control" placeholder="user@example.com">
+                </div>
+
+                <div style="display:flex; gap:15px; margin-top:20px;">
+                    <button id="download-btn" class="btn-primary"
+                        style="flex:1; justify-content:center;">Download</button>
+                    <button id="linkedin-btn" class="btn-secondary"
+                        style="flex:1; justify-content:center; background:#0077b5; border-color:#0077b5;">Share</button>
+                </div>
+            </div>
+
+            <div class="fade-in-up" style="animation-delay: 0.2s;">
+                <h3 style="margin-bottom:15px; color:var(--text-secondary)">Live Preview</h3>
+                <div class="canvas-wrapper">
+                    <canvas id="id-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('id-canvas');
+            const ctx = canvas.getContext('2d');
+            const inputs = ['name', 'role', 'phone', 'email'].map(id => document.getElementById(`${id}-input`));
+            const photoInput = document.getElementById('photo-input');
+            const downloadBtn = document.getElementById('download-btn');
+
+            let templateImg = new Image();
+            let userImg = null;
+            let transform = { scale: 1, x: 0, y: 0 };
+
+            templateImg.src = "/static/assets/idcard.png";
+            templateImg.onload = () => {
+                canvas.width = templateImg.width;
+                canvas.height = templateImg.height;
+                draw();
+            };
+
+            inputs.forEach(input => input.addEventListener('input', draw));
+
+            photoInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            userImg = img;
+                            transform = { scale: 1, x: 0, y: 0 };
+                            document.getElementById('adjustments').classList.add('visible');
+                            document.getElementById('file-name').textContent = file.name;
+                            draw();
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById('zoom-range').addEventListener('input', (e) => { transform.scale = parseFloat(e.target.value); draw(); });
+            document.getElementById('x-range').addEventListener('input', (e) => { transform.x = parseInt(e.target.value); draw(); });
+            document.getElementById('y-range').addEventListener('input', (e) => { transform.y = parseInt(e.target.value); draw(); });
+
+            downloadBtn.addEventListener('click', () => {
+                const link = document.createElement('a');
+                link.download = `GFG_ID_${document.getElementById('name-input').value || 'Core'}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+
+            function draw() {
+                if (!templateImg.complete) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const cw = canvas.width;
+                const ch = canvas.height;
+                const circle = { x: cw * 0.5, y: ch * 0.385, r: cw * 0.22 };
+
+                // Draw Template
+                ctx.drawImage(templateImg, 0, 0, cw, ch);
+
+                // Draw Photo
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.clip();
+
+                if (userImg) {
+                    const ratio = Math.max((circle.r * 2) / userImg.width, (circle.r * 2) / userImg.height);
+                    const scaledW = userImg.width * ratio * transform.scale;
+                    const scaledH = userImg.height * ratio * transform.scale;
+                    ctx.drawImage(userImg, circle.x - scaledW / 2 + transform.x, circle.y - scaledH / 2 + transform.y, scaledW, scaledH);
+                } else {
+                    ctx.fillStyle = '#f3f4f6';
+                    ctx.fill();
+                }
+                ctx.restore();
+
+                // Draw Text
+                ctx.fillStyle = '#111827';
+                ctx.textAlign = 'left';
+                const startX = cw * 0.25;
+
+                const name = document.getElementById('name-input').value;
+                if (name) {
+                    ctx.font = `900 ${cw * 0.05}px 'Poppins', sans-serif`;
+                    ctx.fillText(name.toUpperCase(), startX, ch * 0.62);
+                }
+
+                const role = document.getElementById('role-input').value;
+                if (role) {
+                    ctx.font = `700 ${cw * 0.035}px 'Space Grotesk', sans-serif`;
+                    ctx.fillStyle = '#2f8d46';
+                    ctx.fillText(role.toUpperCase(), startX, ch * 0.67);
+                }
+
+                ctx.font = `600 ${cw * 0.03}px 'Poppins', sans-serif`;
+                ctx.fillStyle = '#4b5563';
+                const phone = document.getElementById('phone-input').value;
+                const email = document.getElementById('email-input').value;
+                if (phone) ctx.fillText(`📱 ${phone}`, startX, ch * 0.76);
+                if (email) ctx.fillText(`✉️ ${email}`, startX, ch * 0.76 + ch * 0.045);
+            }
+        });
+    </script>
+    <script src="/static/js/modern-main.js"></script>
+</body>
+
+</html>
