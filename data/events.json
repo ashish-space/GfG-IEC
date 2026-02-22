@@ -14,13 +14,13 @@
         "highlight_link": "https://www.instagram.com/geeksforgeeks_ieccet/"
     },
     {
-        "title": "Mentor Session",
+        "title": "GfG IEC DSA Workshop",
         "date": "Feb  27, 2026",
         "time": "10:00 AM",
         "status": "ongoing",
         "venue": "IEC Seminar Hall",
-        "description": "Tentative date for upcoming mentor session, registration link will be shared soon.",
-        "link": "https://chat.whatsapp.com/LIn9ooUhHvjKWUm5s5tnDL"
+        "description": "GFG IEC DSA Workshop at IEC College of Engineering & Technology, is a hands-on learning session designed to help students master Data Structures and Algorithms",
+        "link": "events/dsa-workshop/"
     },
     {
         "title": "Hack a Geek ",
@@ -29,6 +29,6 @@
         "status": "upcoming",
         "venue": "Multiple Venues | Virtual",
         "description": "Make cool projects along with your friends from our partner colleges.",
-        "link": "/hack-a-geek/"
+        "link": "events/hack-a-geek/"
     }
 ]
