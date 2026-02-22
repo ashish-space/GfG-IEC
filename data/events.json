@@ -1,8 +1,23 @@
 [
     {
+        "title": "Three 90 Challenge",
+        "date": "Anytime",
+        "status": "past",
+        "description": "Finish Your Course - Get Your Money Back!",
+        "link": "https://gfgcdn.com/tu/Xk4/"
+    },
+    {
+        "title": "Inauguration Ceremony",
+        "date": "Jan 20, 2026",
+        "status": "past",
+        "description": "Grand opening of GFG Student Chapter at IEC.",
+        "highlight_link": "https://www.instagram.com/geeksforgeeks_ieccet/"
+    },
+    {
         "title": "Mentor Session",
-        "date": "Feb  15, 2026",
+        "date": "Feb  27, 2026",
         "time": "10:00 AM",
+        "status": "ongoing",
         "venue": "IEC Seminar Hall",
         "description": "Tentative date for upcoming mentor session, registration link will be shared soon.",
         "link": "https://chat.whatsapp.com/LIn9ooUhHvjKWUm5s5tnDL"
@@ -11,6 +26,7 @@
         "title": "Hack a Geek ",
         "date": "March 17, 2026",
         "time": "10:00 AM",
+        "status": "upcoming",
         "venue": "Multiple Venues | Virtual",
         "description": "Make cool projects along with your friends from our partner colleges.",
         "link": "/hack-a-geek/"

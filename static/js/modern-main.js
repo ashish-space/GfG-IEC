@@ -140,32 +140,32 @@ function initScrollEffects() {
 // Data Fetching
 function getRelativeDataPath() {
     const path = window.location.pathname;
-    
+
     // Known subdirectories in the project
     const knownDirs = ['events', 'team', 'deals', 'partners', 'sponsors', 'student-id', 'secret-id-gen'];
-    
+
     // Check if we're in a subdirectory by looking at the last meaningful part of the path
     let depth = 0;
-    
+
     // Split path and filter out empty strings
     const parts = path.split('/').filter(p => p !== '');
-    
+
     // If we have parts, check the last non-index.html part
     if (parts.length > 0) {
         // Get the last part (could be index.html or a directory name)
         let lastPart = parts[parts.length - 1];
-        
+
         // If it's index.html, check the part before it
         if (lastPart === 'index.html' && parts.length > 1) {
             lastPart = parts[parts.length - 2];
         }
-        
+
         // If the last part is a known directory, we're one level deep
         if (knownDirs.includes(lastPart)) {
             depth = 1;
         }
     }
-    
+
     return "../".repeat(depth) + "data/";
 }
 
@@ -197,14 +197,17 @@ function fixImagePath(path) {
 async function initHomePage() {
     const deals = await fetchData('/data/deals.json');
     const team = await fetchData('/data/team.json');
-    const upcoming = await fetchData('/data/events/upcoming.json');
-    const ongoing = await fetchData('/data/events/ongoing.json');
-    const past = await fetchData('/data/events/past.json');
+    const allEvents = await fetchData('/data/events.json') || [];
+
+    const upcoming = allEvents.filter(e => e.status === 'upcoming');
+    const ongoing = allEvents.filter(e => e.status === 'ongoing');
+    const past = allEvents.filter(e => e.status === 'past');
+
     const partners = await fetchData('/data/partners.json');
     const sponsors = await fetchData('/data/sponsors.json');
 
     // Stats
-    const totalEvents = (upcoming?.length || 0) + (ongoing?.length || 0) + (past?.length || 0);
+    const totalEvents = allEvents.length;
     const eventsCountEl = document.getElementById('events-count');
     if (eventsCountEl) eventsCountEl.innerText = `${totalEvents}+`;
 
@@ -281,19 +284,14 @@ async function initHomePage() {
 
 // Events Page Logic
 async function initEventsPage() {
-    const upcoming = await fetchData('/data/events/upcoming.json');
-    const ongoing = await fetchData('/data/events/ongoing.json');
-    const past = await fetchData('/data/events/past.json');
+    const allEvents = await fetchData('/data/events.json') || [];
 
     const grid = document.getElementById('events-grid');
     const tabBtns = document.querySelectorAll('.tab-btn');
 
     const renderEvents = (type) => {
         grid.innerHTML = '';
-        let data = [];
-        if (type === 'upcoming') data = upcoming;
-        else if (type === 'past') data = past;
-        else if (type === 'ongoing') data = ongoing;
+        const data = allEvents.filter(e => e.status === type);
 
         if (!data || data.length === 0) {
             grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--text-secondary);">No events found in this category.</div>';
@@ -327,15 +325,28 @@ async function initEventsPage() {
 async function initTeamPage() {
     const team = await fetchData('/data/team.json');
     const container = document.getElementById('team-container');
-    console.log('Team data:', team);
-    console.log('Team container:', container);
+
     if (team && container) {
-        team.forEach(member => {
+        // Pinned roles that should always stay at the top
+        const pinnedRoles = ["Faculty Coordinator", "Chapter Lead"];
+
+        const pinnedMembers = team.filter(m => pinnedRoles.includes(m.role));
+        const otherMembers = team.filter(m => !pinnedRoles.includes(m.role));
+
+        // Fisher-Yates shuffle for other members
+        for (let i = otherMembers.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [otherMembers[i], otherMembers[j]] = [otherMembers[j], otherMembers[i]];
+        }
+
+        const finalTeam = [...pinnedMembers, ...otherMembers];
+
+        container.innerHTML = ''; // Clear container before rendering
+        finalTeam.forEach(member => {
             container.innerHTML += renderTeamCard(member);
         });
-    } else {
-        console.error('Team data or container not found');
     }
+
     setTimeout(() => {
         initAutoScroll();
     }, 500);
