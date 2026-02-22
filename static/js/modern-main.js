@@ -193,6 +193,12 @@ function fixImagePath(path) {
     return rootPath + path;
 }
 
+function fixRelativePath(path) {
+    if (!path || path.startsWith('http') || path.startsWith('/') || path.startsWith('#')) return path;
+    const rootPath = getRelativeDataPath().replace('data/', '');
+    return rootPath + path;
+}
+
 // Home Page Logic
 async function initHomePage() {
     const deals = await fetchData('/data/deals.json');
@@ -244,7 +250,7 @@ async function initHomePage() {
                 <span class="highlight-tag">Next Event</span>
                 <h3>${event.title}</h3>
                 <p>${event.date} • ${event.venue}</p>
-                <a href="${event.link || '/events/'}" class="btn-primary btn-sm">Register Now</a>
+                <a href="${fixRelativePath(event.link) || '/events/'}" class="btn-primary btn-sm">Register Now</a>
             </div>
         `;
     }
@@ -390,7 +396,7 @@ function renderEventCard(event) {
             <p class="event-description" style="margin-bottom: 28px;">${(event.description || '').substring(0, 100)}...</p>
             <div class="event-footer" style="gap: 12px;">
                 <span class="event-venue"><i data-lucide="map-pin" style="width:14px"></i> ${event.venue}</span>
-                <a href="${event.link || '#'}" class="btn-primary btn-sm">Join</a>
+                <a href="${fixRelativePath(event.link) || '#'}" class="btn-primary btn-sm">Join</a>
             </div>
         </div>
     `;
@@ -402,7 +408,7 @@ function renderOngoingCard(event) {
             <div class="event-status" style="background:#2f8d46; color:white">LIVE</div>
             <h3 class="event-title" style="margin-bottom: 16px; margin-top: 8px;">${event.title}</h3>
             <p class="event-description" style="margin-bottom: 28px;">${event.description}</p>
-            <a href="${event.link}" target="_blank" class="btn-primary">Join Now <i data-lucide="external-link"></i></a>
+            <a href="${fixRelativePath(event.link)}" target="_blank" class="btn-primary">Join Now <i data-lucide="external-link"></i></a>
         </div>
     `;
 }
