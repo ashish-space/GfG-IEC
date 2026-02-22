@@ -5,7 +5,7 @@
         "time": "10:00 AM",
         "venue": "IEC Seminar Hall",
         "description": "GFG IEC DSA Workshop at IEC College of Engineering & Technology, is a hands-on learning session designed to help students master Data Structures and Algorithms",
-        "link": "dsa-workshop.html"
+        "link": "events/dsa-workshop/"
     },
     {
         "title": "Hack a Geek ",
@@ -13,6 +13,6 @@
         "time": "10:00 AM",
         "venue": "Multiple Venues | Virtual",
         "description": "Make cool projects along with your friends from our partner colleges.",
-        "link": "hack-a-geek.html"
+        "link": "events/hack-a-geek/"
     }
 ]
